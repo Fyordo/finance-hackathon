@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    \Illuminate\Support\Facades\Mail::to('lagutinfedya@gmail.com')->send(new \App\Mail\SignUp());
+    //\Illuminate\Support\Facades\Mail::to('lagutinfedya@gmail.com')->send(new \App\Mail\SignUp());
     return view('welcome');
 });
