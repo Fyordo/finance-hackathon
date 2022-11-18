@@ -3,7 +3,6 @@ include .env
 
 up:
 	docker-compose up -d
-	docker-compose up -d
 	docker exec -it ${APP_NAME}-nginx bash -c "chmod -R guo+w /var/www/storage"
 
 down:
