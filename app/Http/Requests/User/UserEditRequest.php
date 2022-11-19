@@ -24,11 +24,11 @@ class UserEditRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['string', 'max:255'],
-            'dfa' => ['boolean'],
-            'is_male' => ['boolean'],
-            'email' => ['string', 'max:255', 'email', 'unique:users'],
-            'phone' => ['string', 'max:255', 'unique:users'],
+            'name' => ['required', 'string', 'max:255'],
+            'dfa' => ['required', 'boolean'],
+            'is_male' => ['required', 'boolean'],
+            'email' => ['required', 'string', 'max:255', 'email', 'unique:users'],
+            'phone' => ['required', 'string', 'max:255', 'unique:users'],
         ];
     }
 }
