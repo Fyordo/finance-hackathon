@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Role;
+use App\Models\RoleRight;
+use App\Observers\RoleObserver;
+use App\Observers\RoleRightObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
+        Role::observe(RoleObserver::class);
+        RoleRight::observe(RoleRightObserver::class);
     }
 }

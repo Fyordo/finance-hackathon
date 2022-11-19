@@ -1,0 +1,20 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Documentation for Hackathon API",
+        "description": "Документация с визуалом для изучения АПИ",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/": {
+            "get": {
+                "description": "Home page",
+                "responses": {
+                    "default": {
+                        "description": "Welcome page"
+                    }
+                }
+            }
+        }
+    }
+}
