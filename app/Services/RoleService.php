@@ -23,9 +23,9 @@ class RoleService implements ICRUDService
      * @return Role
      * @throws \App\Exceptions\ModelExceptions\ModelCreateException
      */
-    public function create($model): Role
+    public function create($model, User $user = null): Role
     {
-        if (!RoleRightManager::haveAccess(Auth::user()->role, Role::class, RoleRight::CREATE_RIGHT)){
+        if (!RoleRightManager::haveAccess($user ? $user->role : Auth::user()->role, Role::class, RoleRight::CREATE_RIGHT)){
             throw new RightException(RoleRight::CREATE_RIGHT);
         }
         try {
@@ -43,9 +43,9 @@ class RoleService implements ICRUDService
      * @return Role
      * @throws ModelUpdateException|\App\Exceptions\ModelExceptions\ModelReadException
      */
-    public function update($model, $attributes): Role
+    public function update($model, $attributes, User $user = null): Role
     {
-        if (!RoleRightManager::haveAccess(Auth::user()->role, Role::class, RoleRight::UPDATE_RIGHT)){
+        if (!RoleRightManager::haveAccess($user ? $user->role : Auth::user()->role, Role::class, RoleRight::UPDATE_RIGHT)){
             throw new RightException(RoleRight::UPDATE_RIGHT);
         }
         if ($model) {
@@ -64,12 +64,15 @@ class RoleService implements ICRUDService
 
     /**
      * @param array $filter
+     * @param ?User $user
      * @return Collection
      * @throws \App\Exceptions\ModelExceptions\ModelReadException|\App\Exceptions\ModelExceptions\ModelFilterException
      */
-    public function find($filter) : Collection
+    public function find($filter, User $user = null) : Collection
     {
-        if (!RoleRightManager::haveAccess(Auth::user()->role, Role::class, RoleRight::READ_RIGHT)){
+        if (!RoleRightManager::haveAccess($user ?
+            $user->role :
+            Auth::user()->role, Role::class, RoleRight::READ_RIGHT)){
             throw new RightException(RoleRight::READ_RIGHT);
         }
         try {
@@ -88,9 +91,9 @@ class RoleService implements ICRUDService
      * @return void
      * @throws ModelDeleteException
      */
-    public function delete($model)
+    public function delete($model, User $user = null)
     {
-        if (!RoleRightManager::haveAccess(Auth::user()->role, Role::class, RoleRight::DELETE_RIGHT)){
+        if (!RoleRightManager::haveAccess($user ? $user->role : Auth::user()->role, Role::class, RoleRight::DELETE_RIGHT)){
             throw new RightException(RoleRight::DELETE_RIGHT);
         }
         try {

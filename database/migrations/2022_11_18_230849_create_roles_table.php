@@ -26,6 +26,11 @@ return new class extends Migration
         ]);
 
         \App\Models\Role::create([
+            'title' => 'Модератор',
+            'const' => 'MODERATOR'
+        ]);
+
+        \App\Models\Role::create([
             'title' => 'Администратор',
             'const' => 'ADMIN'
         ]);

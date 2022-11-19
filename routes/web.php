@@ -1,5 +1,8 @@
 <?php
 
+use App\Facades\RoleManager;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +17,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    $user = User::create([
+        'role_id' => Role::where('const', '=', Role::ADMIN_ROLE)->first()->id,
+        'password' => '123',
+        'email' => 'test@test',
+        'name' => 'TEST'
+    ]);
+    $clientRole = RoleManager::find(['const' => Role::CLIENT_ROLE], $user);
+    $moderatorRole = RoleManager::find(['const' => Role::MODERATOR_ROLE], $user);
+    $adminRole = RoleManager::find(['const' => Role::ADMIN_ROLE], $user);
+    dd($user);
     return view('welcome');
 });

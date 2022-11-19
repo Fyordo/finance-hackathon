@@ -10,6 +10,7 @@ use App\Exceptions\ModelExceptions\ModelUpdateException;
 use App\Exceptions\RightException;
 use App\Models\Role;
 use App\Models\RoleRight;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
@@ -21,9 +22,9 @@ class RoleRightService implements ICRUDService
      * @return RoleRight
      * @throws \App\Exceptions\ModelExceptions\ModelCreateException
      */
-    public function create($model): RoleRight
+    public function create($model, User $user = null): RoleRight
     {
-        if (!$this->haveAccess(Auth::user()->role, RoleRight::class, RoleRight::CREATE_RIGHT)){
+        if (!$this->haveAccess($user ? $user->role : Auth::user()->role, RoleRight::class, RoleRight::CREATE_RIGHT)){
             throw new RightException(RoleRight::CREATE_RIGHT);
         }
         try {
@@ -41,9 +42,9 @@ class RoleRightService implements ICRUDService
      * @return RoleRight
      * @throws ModelUpdateException|\App\Exceptions\ModelExceptions\ModelReadException
      */
-    public function update($model, $attributes): RoleRight
+    public function update($model, $attributes, User $user = null): RoleRight
     {
-        if (!$this->haveAccess(Auth::user()->role, RoleRight::class, RoleRight::UPDATE_RIGHT)){
+        if (!$this->haveAccess($user ? $user->role : Auth::user()->role, RoleRight::class, RoleRight::UPDATE_RIGHT)){
             throw new RightException(RoleRight::UPDATE_RIGHT);
         }
         if ($model) {
@@ -66,9 +67,9 @@ class RoleRightService implements ICRUDService
      * @throws \App\Exceptions\ModelExceptions\ModelReadException|\App\Exceptions\ModelExceptions\ModelFilterException
      * @throws RightException
      */
-    public function find($filter) : Collection
+    public function find($filter, User $user = null) : Collection
     {
-        if (!$this->haveAccess(Auth::user()->role, RoleRight::class, RoleRight::READ_RIGHT)){
+        if (!$this->haveAccess($user ? $user->role : Auth::user()->role, RoleRight::class, RoleRight::READ_RIGHT)){
             throw new RightException(RoleRight::READ_RIGHT);
         }
         try {
@@ -87,9 +88,9 @@ class RoleRightService implements ICRUDService
      * @return void
      * @throws ModelDeleteException
      */
-    public function delete($model)
+    public function delete($model, User $user = null)
     {
-        if (!$this->haveAccess(Auth::user()->role, RoleRight::class, RoleRight::DELETE_RIGHT)){
+        if (!$this->haveAccess($user ? $user->role : Auth::user()->role, RoleRight::class, RoleRight::DELETE_RIGHT)){
             throw new RightException(RoleRight::DELETE_RIGHT);
         }
         try {

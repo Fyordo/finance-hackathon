@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Role;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,9 +25,9 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        $adminRoleId = \App\Facades\RoleManager::find(['const' => \App\Models\Role::ADMIN_ROLE])->first()->id;
-        $moderatorRoleId = \App\Facades\RoleManager::find(['const' => \App\Models\Role::MODERATOR_ROLE])->first()->id;
-        $clientRoleId = \App\Facades\RoleManager::find(['const' => \App\Models\Role::CLIENT_ROLE])->first()->id;
+        $adminRoleId = Role::where(['const' => \App\Models\Role::ADMIN_ROLE])->first()->id;
+        $moderatorRoleId = Role::where(['const' => \App\Models\Role::MODERATOR_ROLE])->first()->id;
+        $clientRoleId = Role::where(['const' => \App\Models\Role::CLIENT_ROLE])->first()->id;
 
         \App\Models\RoleRight::create([
             'role_id' => $adminRoleId,
