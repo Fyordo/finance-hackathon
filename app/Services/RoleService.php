@@ -25,7 +25,7 @@ class RoleService implements ICRUDService
      */
     public function create($model): Role
     {
-        if (Auth::check() && !RoleRightManager::haveAccess(Auth::user()->role, Role::class, RoleRight::CREATE_RIGHT)){
+        if (!Auth::check() || !RoleRightManager::haveAccess(Auth::user()->role, Role::class, RoleRight::CREATE_RIGHT)){
             throw new RightException(RoleRight::CREATE_RIGHT);
         }
         try {
@@ -45,7 +45,7 @@ class RoleService implements ICRUDService
      */
     public function update($model, $attributes): Role
     {
-        if (Auth::check() && !RoleRightManager::haveAccess(Auth::user()->role, Role::class, RoleRight::UPDATE_RIGHT)){
+        if (!Auth::check() || !RoleRightManager::haveAccess(Auth::user()->role, Role::class, RoleRight::UPDATE_RIGHT)){
             throw new RightException(RoleRight::UPDATE_RIGHT);
         }
         if ($model) {
@@ -70,7 +70,7 @@ class RoleService implements ICRUDService
      */
     public function find($filter) : Collection
     {
-        if (Auth::check() && !RoleRightManager::haveAccess(Auth::user()->role, Role::class, RoleRight::READ_RIGHT)){
+        if (!Auth::check() || !RoleRightManager::haveAccess(Auth::user()->role, Role::class, RoleRight::READ_RIGHT)){
             throw new RightException(RoleRight::READ_RIGHT);
         }
         try {
@@ -91,7 +91,7 @@ class RoleService implements ICRUDService
      */
     public function delete($model)
     {
-        if (Auth::check() && !RoleRightManager::haveAccess(Auth::user()->role, Role::class, RoleRight::DELETE_RIGHT)){
+        if (!Auth::check() || !RoleRightManager::haveAccess(Auth::user()->role, Role::class, RoleRight::DELETE_RIGHT)){
             throw new RightException(RoleRight::DELETE_RIGHT);
         }
         try {
