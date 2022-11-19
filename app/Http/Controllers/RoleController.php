@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\ModelExceptions\ModelReadException;
 use App\Facades\RoleManager;
 use App\Http\Requests\RoleRequest;
+use App\Http\Requests\SearchRequest;
 use App\Http\Resources\RoleResource;
 use App\Models\Role;
 use Illuminate\Http\JsonResponse;
@@ -17,9 +18,14 @@ class RoleController extends Controller
      *
      * @return AnonymousResourceCollection|JsonResponse
      */
-    public function index()
+    public function index(SearchRequest $request)
     {
-        return RoleResource::collection(RoleManager::find(request()->all()));
+        $validated = $request->validated();
+
+        $perPage = $validated['per_page'] ?? 12;
+        $filter = $validated ?? [];
+
+        return RoleResource::collection(RoleManager::find($filter)->paginate($perPage));
     }
 
     /**

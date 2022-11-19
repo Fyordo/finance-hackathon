@@ -3,9 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Facades\RoleRightManager;
+use App\Models\Traits\Searchable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -83,6 +84,17 @@ class User extends Authenticatable implements JWTSubject
     public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * Список доступных моделей
+     * @return array
+     */
+    public function accessibleModels(){
+        return array_column(RoleRightManager::find([
+            'role_id' => $this->role_id,
+            'read' => true
+        ])->get()->toArray(), 'model');
     }
 
     public function scopeFilter(Builder $query, array $filter){
