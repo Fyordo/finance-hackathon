@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
+ * @method static self create(array $properties)
+ *
  * @property string name Имя пользователя
  * @property string email Почта пользователя
  * @property int role_id Идентификатор роли пользователя

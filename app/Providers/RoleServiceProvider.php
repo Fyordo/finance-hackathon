@@ -2,27 +2,29 @@
 
 namespace App\Providers;
 
+use App\Facades\RoleManager;
+use App\Services\RoleService;
 use Illuminate\Support\ServiceProvider;
 
-class AppServiceProvider extends ServiceProvider
+class RoleServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * Register services.
      *
      * @return void
      */
     public function register()
     {
-        $this->app->register(RoleServiceProvider::class);
+        $this->app->bind(RoleManager::class, RoleService::class);
     }
 
     /**
-     * Bootstrap any application services.
+     * Bootstrap services.
      *
      * @return void
      */
     public function boot()
     {
-
+        //
     }
 }

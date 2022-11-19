@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @method static void create(array $properties)
+ * @method static self create(array $properties)
+ * @method static self find(int $id)
  *
  * @property string title Название роли
  * @property string const Константное название роли
@@ -22,6 +24,9 @@ class Role extends Model
         'title',
         'const'
     ];
+
+    public const ADMIN_ROLE = 'ADMIN';
+    public const CLIENT_ROLE = 'CLIENT';
 
     /**
      * Пользователи с данной ролью
