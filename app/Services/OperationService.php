@@ -174,7 +174,7 @@ class OperationService implements ICRUDService
 
         curl_close($curl);
         $rates = (array)json_decode($response)->rates;
-        $actualPrice = $rates[$accountTo->currency->const];
+        $actualPrice = $rates[$accountTo->currency->const] ?? 0.0;
 
         if (abs($actualPrice - $price) > 0.5){
             return false;
