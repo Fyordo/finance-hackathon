@@ -16,5 +16,48 @@
                 }
             }
         }
+    },
+    "components": {
+        "schemas": {
+            "UserResource": {
+                "title": "User",
+                "description": "User model",
+                "properties": {
+                    "id": {
+                        "description": "Идентификатор пользователя",
+                        "type": "number",
+                        "example": 1
+                    },
+                    "email": {
+                        "description": "Почта пользователя",
+                        "type": "string",
+                        "example": "example@mail.ru"
+                    },
+                    "phone": {
+                        "description": "Телефон пользователя",
+                        "type": "string",
+                        "example": "79876543210"
+                    },
+                    "created_at": {
+                        "description": "Дата регистрации пользователя",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2022-11-19 12:12:12"
+                    },
+                    "updated_at": {
+                        "description": "Дата последнего обновления записи о пользователе",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2022-11-19 12:12:12"
+                    },
+                    "role": {
+                        "description": "Роль пользователя",
+                        "type": "number",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            }
+        }
     }
 }

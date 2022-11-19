@@ -13,6 +13,8 @@ class AuthTest extends TestCase
             'email' => 'test@mail.ru',
             'phone' => '12345678900',
             'name' => 'TEST',
+            'is_male' => true,
+            'dfa' => false,
             'password' => '123123'
         ];
 
