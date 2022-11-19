@@ -15,6 +15,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string title Название роли
  * @property string const Константное название роли
  * @property Collection users Пользователи с этой ролью
+ *
+ * @property int created_user_id Идентификатор создателя записи
+ * @property int updated_user_id Идентификатор изменения записи
  */
 class Role extends Model
 {

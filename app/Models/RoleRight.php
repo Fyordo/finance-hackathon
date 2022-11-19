@@ -18,6 +18,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property bool delete Права на удаление
  *
  * @property Role role Роль
+ *
+ * @property int created_user_id Идентификатор создателя записи
+ * @property int updated_user_id Идентификатор изменения записи
  */
 class RoleRight extends Model
 {

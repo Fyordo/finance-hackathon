@@ -19,6 +19,9 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property string phone Телефон пользователя
  * @property int role_id Идентификатор роли пользователя
  * @property Role role Идентификатор роли пользователя
+ *
+ * @property int created_user_id Идентификатор создателя записи
+ * @property int updated_user_id Идентификатор изменения записи
  */
 class User extends Authenticatable implements JWTSubject
 {
