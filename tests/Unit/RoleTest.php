@@ -28,6 +28,7 @@ class RoleTest extends TestCase
 
     public function testUpdate(){
         $user = $this->createAdminUser();
+        $this->actingAs($user);
         $role = RoleManager::create(new Role(['title' => 'TITLE', 'const' => 'CONST']));
         $this->actingAs($user)->assertEquals('CONST222', RoleManager::update($role, ['const' => 'CONST222'])->const);
 
@@ -38,6 +39,7 @@ class RoleTest extends TestCase
 
     public function testDelete(){
         $user = $this->createAdminUser();
+        $this->actingAs($user);
         $role = RoleManager::create(new Role(['title' => 'TITLE', 'const' => 'CONST']));
         $this->actingAs($user)->assertNull(RoleManager::delete($role));
 

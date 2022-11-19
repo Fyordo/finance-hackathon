@@ -11,6 +11,7 @@ use App\Exceptions\RightException;
 use App\Models\Role;
 use App\Models\RoleRight;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
@@ -63,18 +64,16 @@ class RoleRightService implements ICRUDService
 
     /**
      * @param array $filter
-     * @return Collection
+     * @return Builder
      * @throws \App\Exceptions\ModelExceptions\ModelReadException|\App\Exceptions\ModelExceptions\ModelFilterException
      * @throws RightException
      */
-    public function find($filter) : Collection
+    public function find($filter) : Builder
     {
         if (!$this->haveAccess(Auth::user()->role, RoleRight::class, RoleRight::READ_RIGHT)){
             throw new RightException(RoleRight::READ_RIGHT);
         }
-        $items = RoleRight::query();
-        RoleRight::filter($items, $filter);
-        return $items->get();
+        return RoleRight::filter($filter);
     }
 
     /**

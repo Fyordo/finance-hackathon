@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ModelExceptions\ModelReadException;
 use App\Facades\UserManager;
 use App\Http\Requests\UserRequest;
+use App\Http\Requests\SearchRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -16,9 +19,14 @@ class UserController extends Controller
      *
      * @return AnonymousResourceCollection|JsonResponse
      */
-    public function index()
+    public function index(SearchRequest $request)
     {
-        return UserResource::collection(UserManager::find(request()->all()));
+        $validated = $request->validated();
+
+        $perPage = $validated['per_page'] ?? 2;
+        $filter = $validated ?? [];
+
+        return UserResource::collection(UserManager::find($filter)->paginate($perPage));
     }
 
     /**
@@ -30,7 +38,11 @@ class UserController extends Controller
     public function show(int $user)
     {
         try {
-            return new UserResource(UserManager::find(['id' => $user])->first());
+            $item = UserManager::find(['id' => $user])->first();
+            if (!$item){
+                throw new ModelReadException(User::class);
+            }
+            return new UserResource($item);
         }
         catch (\Exception $exception){
             return response()->json([

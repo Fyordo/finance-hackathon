@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\ModelExceptions\ModelReadException;
 use App\Facades\RoleManager;
 use App\Http\Requests\RoleRequest;
 use App\Http\Resources\RoleResource;
@@ -53,7 +54,11 @@ class RoleController extends Controller
     public function show(int $role)
     {
         try {
-            return new RoleResource(RoleManager::find(['id' => $role])->first());
+            $item = RoleManager::find(['id' => $role])->first();
+            if (!$item){
+                throw new ModelReadException(Role::class);
+            }
+            return new RoleResource($item);
         }
         catch (\Exception $exception){
             return response()->json([

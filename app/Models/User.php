@@ -85,6 +85,12 @@ class User extends Authenticatable implements JWTSubject
     public function scopeFilter(Builder $query, array $filter){
         foreach ($filter as $key => $value) {
             switch ($key) {
+                case 'id':
+                    if ($value) {
+                        $query
+                            ->where('id', '=', $value);
+                    }
+                    break;
                 case 'search':
                     if ($value) {
                         $query

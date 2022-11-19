@@ -12,6 +12,7 @@ use App\Facades\RoleRightManager;
 use App\Models\Searchable;
 use App\Models\User;
 use App\Models\RoleRight;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
@@ -66,15 +67,15 @@ class UserService implements ICRUDService
      * @param array $filter
      * @param ?User $user
      * @return Collection
-     * @throws RightException
+     * @throws Builder
      */
-    public function find($filter) : Collection
+    public function find($filter) : Builder
     {
         if (!Auth::check() || !RoleRightManager::haveAccess(Auth::user()->role, User::class, RoleRight::READ_RIGHT)){
             throw new RightException(RoleRight::READ_RIGHT);
         }
 
-        return User::filter($filter)->get();
+        return User::filter($filter);
     }
 
     /**
