@@ -69,8 +69,7 @@ class RoleService implements ICRUDService
      */
     public function find($filter) : Collection
     {
-        $role = User::all()->first()->role;
-        if (!RoleRightManager::haveAccess($role, Role::class, RoleRight::READ_RIGHT)){
+        if (!RoleRightManager::haveAccess(Auth::user()->role, Role::class, RoleRight::READ_RIGHT)){
             throw new RightException(RoleRight::READ_RIGHT);
         }
         try {
