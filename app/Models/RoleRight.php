@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class RoleRight extends Model
 {
     use HasFactory;
+    use Searchable;
 
     protected $fillable = [
         'role_id',

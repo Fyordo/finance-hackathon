@@ -2,21 +2,20 @@
 
 namespace App\Facades;
 
-use App\Models\Role;
-use App\Services\RoleService;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see RoleService
+ * @see UserService
  *
- * @method static Role create(Role $model) Создать роль
- * @method static Role update(Role $model, $attributes) Обновить роль
+ * @method static User create(User $model) Создать роль
+ * @method static User update(User $model, $attributes) Обновить роль
  * @method static Builder find(array $filter) Найти роли по фильтру
- * @method static null delete(Role $model) Удалить роль
+ * @method static null delete(User $model) Удалить роль
  */
-class RoleManager extends Facade
+class UserManager extends Facade
 {
     protected static function getFacadeAccessor()
     {

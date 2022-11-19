@@ -11,6 +11,7 @@ class AuthTest extends TestCase
     public function testRegister(){
         $payload = [
             'email' => 'test@mail.ru',
+            'phone' => '12345678900',
             'name' => 'TEST',
             'password' => '123123'
         ];

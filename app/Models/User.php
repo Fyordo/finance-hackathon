@@ -3,7 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -14,12 +16,14 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  *
  * @property string name Имя пользователя
  * @property string email Почта пользователя
+ * @property string phone Телефон пользователя
  * @property int role_id Идентификатор роли пользователя
  * @property Role role Идентификатор роли пользователя
  */
 class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
+    use Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -29,6 +33,7 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
         'role_id',
     ];
@@ -75,5 +80,26 @@ class User extends Authenticatable implements JWTSubject
     public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function scopeFilter(Builder $query, array $filter){
+        foreach ($filter as $key => $value) {
+            switch ($key) {
+                case 'id':
+                    if ($value) {
+                        $query
+                            ->where('id', '=', $value);
+                    }
+                    break;
+                case 'search':
+                    if ($value) {
+                        $query
+                            ->where('email', 'ILIKE', '%' . $value . '%')
+                            ->orWhere('name', 'ILIKE', '%' . $value . '%')
+                            ->orWhere('phone', 'ILIKE', '%' . $value . '%');
+                    }
+                    break;
+            }
+        }
     }
 }

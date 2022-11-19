@@ -9,24 +9,24 @@ use App\Exceptions\ModelExceptions\ModelReadException;
 use App\Exceptions\ModelExceptions\ModelUpdateException;
 use App\Exceptions\RightException;
 use App\Facades\RoleRightManager;
-use App\Models\Role;
-use App\Models\RoleRight;
+use App\Models\Searchable;
 use App\Models\User;
+use App\Models\RoleRight;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 
-class RoleService implements ICRUDService
+class UserService implements ICRUDService
 {
     /**
-     * @param Role $model
-     * @return Role
+     * @param User $model
+     * @return User
      * @throws \App\Exceptions\ModelExceptions\ModelCreateException
      */
-    public function create($model): Role
+    public function create($model): User
     {
-        if (!Auth::check() || !RoleRightManager::haveAccess(Auth::user()->role, Role::class, RoleRight::CREATE_RIGHT)){
+        if (!Auth::check() || !RoleRightManager::haveAccess(Auth::user()->role, User::class, RoleRight::CREATE_RIGHT)){
             throw new RightException(RoleRight::CREATE_RIGHT);
         }
         try {
@@ -34,19 +34,19 @@ class RoleService implements ICRUDService
 
             return $model;
         } catch (\Exception $exception){
-            throw new ModelCreateException(Role::class);
+            throw new ModelCreateException(User::class);
         }
     }
 
     /**
-     * @param Role $model
+     * @param User $model
      * @param $attributes
-     * @return Role
+     * @return User
      * @throws ModelUpdateException|\App\Exceptions\ModelExceptions\ModelReadException
      */
-    public function update($model, $attributes): Role
+    public function update($model, $attributes): User
     {
-        if (!Auth::check() || !RoleRightManager::haveAccess(Auth::user()->role, Role::class, RoleRight::UPDATE_RIGHT)){
+        if (!Auth::check() || !RoleRightManager::haveAccess(Auth::user()->role, User::class, RoleRight::UPDATE_RIGHT)){
             throw new RightException(RoleRight::UPDATE_RIGHT);
         }
         if ($model) {
@@ -55,42 +55,43 @@ class RoleService implements ICRUDService
 
                 return $model;
             } catch (\Exception $exception){
-                throw new ModelUpdateException(Role::class);
+                throw new ModelUpdateException(User::class);
             }
         }
         else{
-            throw new ModelReadException(Role::class);
+            throw new ModelReadException(User::class);
         }
     }
 
     /**
      * @param array $filter
      * @param ?User $user
-     * @return Builder
-     * @throws \App\Exceptions\ModelExceptions\ModelReadException|\App\Exceptions\ModelExceptions\ModelFilterException
+     * @return Collection
+     * @throws Builder
      */
     public function find($filter) : Builder
     {
-        if (!Auth::check() || !RoleRightManager::haveAccess(Auth::user()->role, Role::class, RoleRight::READ_RIGHT)){
+        if (!Auth::check() || !RoleRightManager::haveAccess(Auth::user()->role, User::class, RoleRight::READ_RIGHT)){
             throw new RightException(RoleRight::READ_RIGHT);
         }
-        return Role::filter($filter);
+
+        return User::filter($filter);
     }
 
     /**
-     * @param Role $model
+     * @param User $model
      * @return void
      * @throws ModelDeleteException
      */
     public function delete($model)
     {
-        if (!Auth::check() || !RoleRightManager::haveAccess(Auth::user()->role, Role::class, RoleRight::DELETE_RIGHT)){
+        if (!Auth::check() || !RoleRightManager::haveAccess(Auth::user()->role, User::class, RoleRight::DELETE_RIGHT)){
             throw new RightException(RoleRight::DELETE_RIGHT);
         }
         try {
             $model->delete();
         } catch (\Exception $exception){
-            throw new ModelDeleteException(Role::class);
+            throw new ModelDeleteException(User::class);
         }
     }
 }

@@ -19,5 +19,6 @@ Route::group([
         'middleware' => 'auth:api'
     ], function (){
         Route::apiResource('/role', RoleController::class);
+        Route::apiResource('/user', \App\Http\Controllers\UserController::class)->except('store');
     });
 });
