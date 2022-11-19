@@ -12,6 +12,7 @@ services:
     app:
         image: laravel/docker
         container_name: ${APP_NAME}-php
+        restart: always
         build:
             context: .
             dockerfile: .docker/php_composer/Dockerfile

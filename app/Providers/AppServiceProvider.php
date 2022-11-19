@@ -13,7 +13,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->register(RoleServiceProvider::class);
+        $this->app->register(RoleRightServiceProvider::class);
     }
 
     /**
@@ -23,6 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+
     }
 }
