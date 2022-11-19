@@ -14,6 +14,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  *
  * @property string name Имя пользователя
  * @property string email Почта пользователя
+ * @property string phone Телефон пользователя
  * @property int role_id Идентификатор роли пользователя
  * @property Role role Идентификатор роли пользователя
  */

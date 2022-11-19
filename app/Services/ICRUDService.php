@@ -6,11 +6,11 @@ use App\Models\User;
 
 interface ICRUDService
 {
-    public function create($model, User $user = null);
+    public function create($model);
 
-    public function find($filter, User $user = null);
+    public function find($filter);
 
-    public function update($model, $attributes, User $user = null);
+    public function update($model, $attributes);
 
-    public function delete($model, User $user = null);
+    public function delete($model);
 }

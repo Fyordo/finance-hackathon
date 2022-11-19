@@ -11,42 +11,40 @@ class RoleTest extends TestCase
 {
     public function testRead(){
         $user = $this->createAdminUser();
-        $clientRole = RoleManager::find(['const' => Role::CLIENT_ROLE], $user);
-        $moderatorRole = RoleManager::find(['const' => Role::MODERATOR_ROLE], $user);
-        $adminRole = RoleManager::find(['const' => Role::ADMIN_ROLE], $user);
 
-        $this->assertEquals(1, $clientRole->count());
-        $this->assertEquals(1, $moderatorRole->count());
-        $this->assertEquals(1, $adminRole->count());
+        $this->actingAs($user)->assertEquals(1, RoleManager::find(['const' => Role::CLIENT_ROLE])->count());
+        $this->actingAs($user)->assertEquals(1, RoleManager::find(['const' => Role::MODERATOR_ROLE])->count());
+        $this->actingAs($user)->assertEquals(1, RoleManager::find(['const' => Role::ADMIN_ROLE])->count());
     }
 
     public function testWrite(){
         $user = $this->createAdminUser();
-        $this->assertEquals(RoleManager::create(new Role(['title' => 'TITLE', 'const' => 'CONST']), $user)->const, 'CONST');
+        $this->actingAs($user)->assertEquals('CONST', RoleManager::create(new Role(['title' => 'TITLE', 'const' => 'CONST']))->const);
 
-        $this->expectException(RightException::class);
         $user = $this->createClientUser();
-        RoleManager::create(new Role(['title' => 'TITLE', 'const' => 'CONST']), $user);
+        $this->actingAs($user)->expectException(RightException::class);
+        RoleManager::create(new Role(['title' => 'TITLE', 'const' => 'CONST']));
     }
 
     public function testUpdate(){
         $user = $this->createAdminUser();
-        $role = RoleManager::create(new Role(['title' => 'TITLE', 'const' => 'CONST']), $user);
-        $this->assertEquals(RoleManager::update($role, ['const' => 'CONST222'], $user)->const, 'CONST222');
+        $role = RoleManager::create(new Role(['title' => 'TITLE', 'const' => 'CONST']));
+        $this->actingAs($user)->assertEquals('CONST222', RoleManager::update($role, ['const' => 'CONST222'])->const);
 
-        $this->expectException(RightException::class);
         $user = $this->createClientUser();
-        RoleManager::update($role, ['const' => 'CONST333'], $user);
+        $this->actingAs($user)->expectException(RightException::class);
+        RoleManager::update($role, ['const' => 'CONST333']);
     }
 
     public function testDelete(){
         $user = $this->createAdminUser();
-        $role = RoleManager::create(new Role(['title' => 'TITLE', 'const' => 'CONST']), $user);
-        $this->assertNull(RoleManager::delete($role, $user));
+        $role = RoleManager::create(new Role(['title' => 'TITLE', 'const' => 'CONST']));
+        $this->actingAs($user)->assertNull(RoleManager::delete($role));
 
-        $this->expectException(RightException::class);
-        $role = RoleManager::create(new Role(['title' => 'TITLE', 'const' => 'CONST']), $user);
+
         $user = $this->createClientUser();
-        RoleManager::delete($role, $user);
+        $this->actingAs($user)->expectException(RightException::class);
+        $role = RoleManager::create(new Role(['title' => 'TITLE', 'const' => 'CONST']));
+        RoleManager::delete($role);
     }
 }

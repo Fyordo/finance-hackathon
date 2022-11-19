@@ -12,10 +12,10 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @see RoleRightService
  *
- * @method static RoleRight create(RoleRight $model, User $user = null) Создать роль
- * @method static RoleRight update(RoleRight $model, $attributes, User $user = null) Обновить роль
- * @method static Collection find(array $filter, User $user = null) Найти роли по фильтру
- * @method static RoleRight delete(RoleRight $model, User $user = null) Удалить роль
+ * @method static RoleRight create(RoleRight $model) Создать роль
+ * @method static RoleRight update(RoleRight $model, $attributes) Обновить роль
+ * @method static Collection find(array $filter) Найти роли по фильтру
+ * @method static RoleRight delete(RoleRight $model) Удалить роль
  *
  * @method static bool haveAccess(Role $role, string $modelClass, string $type) Проверить, есть ли у этой роли права на эту модель
  */
