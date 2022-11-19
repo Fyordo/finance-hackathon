@@ -6,7 +6,9 @@ use App\Exceptions\ModelExceptions\ModelCreateException;
 use App\Exceptions\ModelExceptions\ModelDeleteException;
 use App\Exceptions\ModelExceptions\ModelReadException;
 use App\Exceptions\ModelExceptions\ModelUpdateException;
+use App\Exceptions\RightException;
 use App\Models\Currency;
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,6 +22,9 @@ class CurrencyService implements ICRUDService
      */
     public function create($model): Currency
     {
+        if (Auth::user()->role->const !== Role::ADMIN_ROLE){
+            throw new RightException('create');
+        }
         try {
             $model->save();
 
@@ -37,6 +42,9 @@ class CurrencyService implements ICRUDService
      */
     public function update($model, $attributes): Currency
     {
+        if (Auth::user()->role->const !== Role::ADMIN_ROLE){
+            throw new RightException('update');
+        }
         if ($model) {
             try {
                 $model->update($attributes);
@@ -68,6 +76,9 @@ class CurrencyService implements ICRUDService
      */
     public function delete($model)
     {
+        if (Auth::user()->role->const !== Role::ADMIN_ROLE){
+            throw new RightException('delete');
+        }
         try {
             $model->delete();
         } catch (\Exception $exception){
