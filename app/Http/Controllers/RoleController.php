@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\ModelExceptions\ModelReadException;
 use App\Facades\RoleManager;
-use App\Http\Requests\RoleRequest;
-use App\Http\Requests\SearchRequest;
+use App\Http\Requests\Role\RoleEditRequest;
+use App\Http\Requests\User\UserReadRequest;
 use App\Http\Resources\RoleResource;
 use App\Models\Role;
 use Illuminate\Http\JsonResponse;
@@ -18,7 +18,7 @@ class RoleController extends Controller
      *
      * @return AnonymousResourceCollection|JsonResponse
      */
-    public function index(SearchRequest $request)
+    public function index(UserReadRequest $request)
     {
         $validated = $request->validated();
 
@@ -31,10 +31,10 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  RoleRequest  $request
+     * @param  \App\Http\Requests\Role\RoleEditRequest  $request
      * @return \Illuminate\Http\JsonResponse|RoleResource
      */
-    public function store(RoleRequest $request)
+    public function store(RoleEditRequest $request)
     {
         try {
             $validated = $request->validated();
@@ -81,7 +81,7 @@ class RoleController extends Controller
      * @param int $role
      * @return RoleResource|JsonResponse
      */
-    public function update(RoleRequest $request, $role)
+    public function update(RoleEditRequest $request, $role)
     {
         try {
             $validated = $request->validated();
