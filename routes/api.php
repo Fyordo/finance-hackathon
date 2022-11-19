@@ -21,6 +21,7 @@ Route::group([
         Route::apiResource('/role', RoleController::class);
         Route::apiResource('/currency', \App\Http\Controllers\CurrencyController::class);
         Route::apiResource('/account', \App\Http\Controllers\AccountController::class);
+        Route::apiResource('/operation', \App\Http\Controllers\OperationController::class);
         Route::apiResource('/user', \App\Http\Controllers\UserController::class)->except('store');
     });
 });
