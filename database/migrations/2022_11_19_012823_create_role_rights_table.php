@@ -23,6 +23,8 @@ return new class extends Migration
             $table->boolean('update')->default(false);
             $table->boolean('delete')->default(false);
             $table->timestamps();
+            $table->bigInteger('created_user_id')->nullable();
+            $table->bigInteger('updated_user_id')->nullable();
         });
 
         $adminRoleId = Role::where(['const' => \App\Models\Role::ADMIN_ROLE])->first()->id;
