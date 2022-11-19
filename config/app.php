@@ -209,6 +209,7 @@ return [
         \App\Providers\RoleRightServiceProvider::class,
         \App\Providers\UserServiceProvider::class,
         \App\Providers\CurrencyServiceProvider::class,
+        \App\Providers\AccountServiceProvider::class,
 
     ],
 

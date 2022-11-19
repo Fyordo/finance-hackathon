@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
 /**
  * @method static Builder filter(array $filter)
  * @method static Builder forUser(User|Authenticatable $user)
- * @method static Builder forRole(Role $role)
  */
 trait Searchable
 {

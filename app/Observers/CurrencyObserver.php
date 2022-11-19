@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Auth;
 
 class CurrencyObserver
 {
-    public function saving(Currency $role)
+    public function saving(Currency $currency)
     {
-        $role->created_user_id = Auth::id();
-        $role->updated_user_id = Auth::id();
+        $currency->created_user_id = Auth::id();
+        $currency->updated_user_id = Auth::id();
     }
 
-    public function updating(Currency $role){
-        $role->updated_user_id = Auth::id();
+    public function updating(Currency $currency){
+        $currency->updated_user_id = Auth::id();
     }
 }

@@ -2,9 +2,12 @@
 
 namespace App\Providers;
 
+use App\Facades\AccountManager;
+use App\Models\Account;
 use App\Models\Currency;
 use App\Models\Role;
 use App\Models\RoleRight;
+use App\Observers\AccountObserver;
 use App\Observers\CurrencyObserver;
 use App\Observers\RoleObserver;
 use App\Observers\RoleRightObserver;
@@ -23,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->register(RoleRightServiceProvider::class);
         $this->app->register(UserServiceProvider::class);
         $this->app->register(CurrencyServiceProvider::class);
+        $this->app->register(AccountServiceProvider::class);
     }
 
     /**
@@ -35,5 +39,6 @@ class AppServiceProvider extends ServiceProvider
         Role::observe(RoleObserver::class);
         RoleRight::observe(RoleRightObserver::class);
         Currency::observe(CurrencyObserver::class);
+        Account::observe(AccountObserver::class);
     }
 }
