@@ -11,6 +11,7 @@ use App\Exceptions\OperationExceptions\InvalidPriceException;
 use App\Exceptions\OperationExceptions\InvalidSumException;
 use App\Exceptions\RightException;
 use App\Facades\AccountManager;
+use App\Models\Account;
 use App\Models\Operation;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
@@ -26,12 +27,13 @@ class OperationService implements ICRUDService
     public function create($model): Operation
     {
         $accountFrom = AccountManager::find(['id' => $model->account_from_id])->first();
+        $accountTo = AccountManager::find(['id' => $model->account_to_id])->first();
         if ($model->sum && ($model->sum < 0 || floatval($accountFrom->amount) < $model->sum)){
             throw new InvalidSumException();
         }
-        if ($model->price && !$this->checkPrice($model->price)){
+        if ($model->price && !$this->checkPrice($accountFrom, $accountTo, $model->price)){
             throw new InvalidPriceException();
-            }
+        }
         try {
             $model->confirmation_code = $this->genRandomCode();
             $model->save();
@@ -140,17 +142,43 @@ class OperationService implements ICRUDService
     /**
      * Проверка валидности курса
      *
+     * @param Account $accountFrom
+     * @param Account $accountTo
      * @param float $price
      * @return bool
      */
-    private function checkPrice(float $price) : bool{
+    private function checkPrice(Account $accountFrom, Account $accountTo, float $price) : bool{
         $price = floatval($price);
 
         if ($price <= 0){
             return false;
         }
 
-        // TODO Взять с апишки данные о курсе и сравнить с пейлоадом
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.xchangeapi.com/latest?base=" . $accountFrom->currency->const,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "api-key: " . env('CURRENCY_API_KEY'),
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $rates = (array)json_decode($response)->rates;
+        $actualPrice = $rates[$accountTo->currency->const];
+
+        if (abs($actualPrice - $price) > 0.5){
+            return false;
+        }
 
         return true;
     }
