@@ -12,7 +12,6 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
     use RefreshDatabase;
-    use DatabaseMigrations;
 
     public function createAdminUser() : User{
         return User::create([
