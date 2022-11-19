@@ -19,7 +19,9 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property string email Почта пользователя
  * @property string phone Телефон пользователя
  * @property int role_id Идентификатор роли пользователя
- * @property Role role Идентификатор роли пользователя
+ * @property bool dfa Включена ли двухфакторное подтверждение при переводе
+ * @property bool is_male Пол
+ * @property Role role Роль пользователя
  *
  * @property int created_user_id Идентификатор создателя записи
  * @property int updated_user_id Идентификатор изменения записи
@@ -40,6 +42,8 @@ class User extends Authenticatable implements JWTSubject
         'phone',
         'password',
         'role_id',
+        '2fa',
+        'is_male',
     ];
 
     /**
@@ -84,17 +88,6 @@ class User extends Authenticatable implements JWTSubject
     public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Role::class);
-    }
-
-    /**
-     * Список доступных моделей
-     * @return array
-     */
-    public function accessibleModels(){
-        return array_column(RoleRightManager::find([
-            'role_id' => $this->role_id,
-            'read' => true
-        ])->get()->toArray(), 'model');
     }
 
     public function scopeFilter(Builder $query, array $filter){

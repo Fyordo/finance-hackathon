@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\ModelExceptions\ModelReadException;
 use App\Facades\UserManager;
-use App\Http\Requests\UserRequest;
-use App\Http\Requests\SearchRequest;
+use App\Http\Requests\User\UserReadRequest;
+use App\Http\Requests\User\UserEditRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -19,7 +18,7 @@ class UserController extends Controller
      *
      * @return AnonymousResourceCollection|JsonResponse
      */
-    public function index(SearchRequest $request)
+    public function index(UserReadRequest $request)
     {
         $validated = $request->validated();
 
@@ -59,7 +58,7 @@ class UserController extends Controller
      * @param int $user
      * @return UserResource|JsonResponse
      */
-    public function update(UserRequest $request, $user)
+    public function update(UserEditRequest $request, $user)
     {
         try {
             $validated = $request->validated();

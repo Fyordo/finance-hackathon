@@ -18,7 +18,16 @@ Route::group([
     Route::group([
         'middleware' => 'auth:api'
     ], function (){
+        Route::group([
+            'prefix' => '/operation'
+        ], function(){
+            Route::post('/confirm/{id}', [\App\Http\Controllers\OperationController::class, 'confirm']);
+            Route::apiResource('/', \App\Http\Controllers\OperationController::class);
+        });
+
         Route::apiResource('/role', RoleController::class);
+        Route::apiResource('/currency', \App\Http\Controllers\CurrencyController::class);
+        Route::apiResource('/account', \App\Http\Controllers\AccountController::class);
         Route::apiResource('/user', \App\Http\Controllers\UserController::class)->except('store');
     });
 });

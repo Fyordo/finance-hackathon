@@ -208,6 +208,8 @@ return [
         \App\Providers\RoleServiceProvider::class,
         \App\Providers\RoleRightServiceProvider::class,
         \App\Providers\UserServiceProvider::class,
+        \App\Providers\CurrencyServiceProvider::class,
+        \App\Providers\AccountServiceProvider::class,
 
     ],
 

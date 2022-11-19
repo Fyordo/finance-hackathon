@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
 /**
  * @method static Builder filter(array $filter)
  * @method static Builder forUser(User|Authenticatable $user)
- * @method static Builder forRole(Role $role)
  */
 trait Searchable
 {
@@ -26,7 +25,7 @@ trait Searchable
     public function scopeFilter(Builder $query, array $filter)
     {
         foreach ($filter as $key => $value) {
-            if (in_array($key, $this->fillable) && !empty($value)) {
+            if ((in_array($key, $this->fillable) || $key == 'id') && !empty($value)) {
                 $query->whereIn($key, is_array($value) ? $value : [$value]);
             }
         }

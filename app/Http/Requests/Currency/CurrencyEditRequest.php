@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Currency;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterRequest extends FormRequest
+class CurrencyEditRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,9 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'max:255', 'email', 'unique:users'],
-            'phone' => ['required', 'string', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:6'],
+            'title' => ['required', 'string', 'max:255'],
+            'const' => ['required', 'string', 'max:255'],
+            'icon' => ['required', 'string', 'max:255'],
         ];
     }
 }

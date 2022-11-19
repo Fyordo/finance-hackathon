@@ -22,6 +22,8 @@ class UserResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'role' => $this->when($this->role_id, new RoleResource($this->role)),
+            'gender' => $this->when($this->is_male, $this->is_male ? 'male' : 'female'),
+            'dfa' => $this->dfa,
         ];
     }
 }
