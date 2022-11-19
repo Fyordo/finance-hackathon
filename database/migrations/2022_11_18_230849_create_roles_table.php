@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('const');
             $table->timestamps();
+            $table->bigInteger('created_user_id')->nullable();
+            $table->bigInteger('updated_user_id')->nullable();
         });
 
         \App\Models\Role::create([
