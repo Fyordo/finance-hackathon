@@ -23,6 +23,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
+    use Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -81,13 +82,17 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(Role::class);
     }
 
-    public static function filter(Builder $query, array $filter){
+    public function scopeFilter(Builder $query, array $filter){
         foreach ($filter as $key => $value) {
-            try {
-                $query->where($key, '=', $value);
-                unset($filter[$key]);
-            } catch (QueryException $queryException){
-                continue;
+            switch ($key) {
+                case 'search':
+                    if ($value) {
+                        $query
+                            ->where('email', 'ILIKE', '%' . $value . '%')
+                            ->orWhere('name', 'ILIKE', '%' . $value . '%')
+                            ->orWhere('phone', 'ILIKE', '%' . $value . '%');
+                    }
+                    break;
             }
         }
     }

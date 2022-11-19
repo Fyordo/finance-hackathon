@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 
+/**
+ * @method static Builder filter(array $filter)
+ */
 trait Searchable
 {
     public function scopeFilter(Builder $query, array $filter){

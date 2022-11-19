@@ -18,8 +18,6 @@ use Illuminate\Support\Facades\Auth;
 
 class UserService implements ICRUDService
 {
-    use Searchable;
-
     /**
      * @param User $model
      * @return User
