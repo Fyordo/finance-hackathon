@@ -21,6 +21,7 @@ Route::group([
         Route::group([
             'prefix' => '/operation'
         ], function(){
+            Route::post('/confirm/{id}', [\App\Http\Controllers\OperationController::class, 'confirm']);
             Route::apiResource('/', \App\Http\Controllers\OperationController::class);
         });
 

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->float('sum');
             $table->float('price');
             $table->dateTime('confirmed_at')->nullable();
+            $table->string('confirmation_code');
             $table->timestamps();
             $table->bigInteger('created_user_id')->nullable();
             $table->bigInteger('updated_user_id')->nullable();

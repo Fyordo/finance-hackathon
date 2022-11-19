@@ -16,6 +16,7 @@ class OperationResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'account_from' => $this->when($this->account_from_id, new AccountResource(AccountManager::find(['id' => $this->account_from_id])->first())),
             'account_to' => $this->when($this->account_to_id, new AccountResource(AccountManager::find(['id' => $this->account_to_id])->first())),
             'sum' => $this->sum,

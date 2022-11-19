@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\ModelExceptions\ModelReadException;
+use App\Exceptions\OperationExceptions\InvalidCodeException;
+use App\Exceptions\OperationExceptions\InvalidSumException;
+use App\Facades\AccountManager;
 use App\Facades\OperationManager;
+use App\Http\Requests\Operation\OperationConfirmRequest;
 use App\Http\Requests\Operation\OperationEditRequest;
 use App\Http\Requests\Operation\OperationReadRequest;
 use App\Http\Resources\OperationResource;
@@ -116,5 +120,36 @@ class OperationController extends Controller
                 'trace' => $exception->getTrace(),
             ], 400);
         }
+    }
+
+    /**
+     * Подтверждение операции по переводу
+     *
+     * @param OperationConfirmRequest $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function confirm(OperationConfirmRequest $request, int $id){
+        try {
+            $validated = $request->validated();
+
+            /**
+             * @var Operation $operation
+             */
+            $operation = OperationManager::find(['id' => $id])->first();
+            if ($operation){
+                return response()->json(OperationManager::confirm($operation, $validated['code']));
+            }
+            else{
+                throw new ModelReadException(Operation::class);
+            }
+        }
+        catch (\Exception $exception){
+            return response()->json([
+                'error' => $exception->getMessage(),
+                'trace' => $exception->getTrace(),
+            ], 400);
+        }
+
     }
 }

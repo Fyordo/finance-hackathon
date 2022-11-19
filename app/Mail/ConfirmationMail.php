@@ -10,18 +10,20 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SignUp extends Mailable
+class ConfirmationMail extends Mailable
 {
     use Queueable, SerializesModels;
+
+    public string $code;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(string $code)
     {
-        //
+        $this->code = $code;
     }
 
     /**
@@ -33,7 +35,7 @@ class SignUp extends Mailable
     {
         return new Envelope(
             from: new Address(env('MAIL_FROM_NAME'), env('MAIL_FROM_NAME')),
-            subject: 'Test Mail',
+            subject: 'Operation Confirmation',
         );
     }
 
@@ -45,7 +47,7 @@ class SignUp extends Mailable
     public function content()
     {
         return new Content(
-            view: 'signup',
+            view: 'mail.confirmation'
         );
     }
 

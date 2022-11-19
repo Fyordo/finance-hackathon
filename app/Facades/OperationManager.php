@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Facade;
  * @method static Operation update(Operation $model, $attributes) Обновить операцию
  * @method static Builder find(array $filter) Найти операции по фильтру
  * @method static null delete(Operation $model) Удалить операцию
+ *
+ * @method static array confirm(Operation $operation, string $code) Подтвердить операцию
  */
 class OperationManager extends Facade
 {

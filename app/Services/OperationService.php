@@ -6,12 +6,15 @@ use App\Exceptions\ModelExceptions\ModelCreateException;
 use App\Exceptions\ModelExceptions\ModelDeleteException;
 use App\Exceptions\ModelExceptions\ModelReadException;
 use App\Exceptions\ModelExceptions\ModelUpdateException;
+use App\Exceptions\OperationExceptions\InvalidCodeException;
 use App\Exceptions\OperationExceptions\InvalidPriceException;
 use App\Exceptions\OperationExceptions\InvalidSumException;
 use App\Exceptions\RightException;
+use App\Facades\AccountManager;
 use App\Models\Operation;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OperationService implements ICRUDService
 {
@@ -22,15 +25,20 @@ class OperationService implements ICRUDService
      */
     public function create($model): Operation
     {
+        $accountFrom = AccountManager::find(['id' => $model->account_from_id])->first();
+        if ($model->sum && ($model->sum < 0 || floatval($accountFrom->amount) < $model->sum)){
+            throw new InvalidSumException();
+        }
+        if ($model->price && !$this->checkPrice($model->price)){
+            throw new InvalidPriceException();
+            }
         try {
-            if ($model->sum && $model->sum < 0){
-                throw new InvalidSumException();
-            }
-            if ($model->price && !$this->checkPrice($model->price)){
-                throw new InvalidPriceException();
-            }
-            // TODO Mail Send
+            $model->confirmation_code = $this->genRandomCode();
             $model->save();
+
+            if (Auth::user()->dfa && Auth::user()->email){
+                \Illuminate\Support\Facades\Mail::to(Auth::user()->email)->send(new \App\Mail\ConfirmationMail($model->confirmation_code));
+            }
 
             return $model;
         } catch (\Exception $exception){
@@ -56,7 +64,6 @@ class OperationService implements ICRUDService
             if (isset($attributes['price']) && !$this->checkPrice($attributes['price'])){
                 throw new InvalidPriceException();
             }
-            // TODO Mail Confirmation
             try {
                 $model->update($attributes);
 
@@ -97,6 +104,39 @@ class OperationService implements ICRUDService
         }
     }
 
+    public function confirm(Operation $operation, string $code){
+        try {
+            if ($operation->confirmed_at !== null){
+                return [
+                    'status' => 'already confirmed',
+                    'account_from' => $operation->accountFrom,
+                    'account_to' => $operation->accountTo,
+                ];
+            }
+            if ($operation->confirmation_code !== $code){
+                throw new InvalidCodeException();
+            }
+            DB::beginTransaction();
+            $operation->accountFrom()->update([
+                'amount' => $operation->accountFrom->amount - $operation->sum
+            ]);
+            $operation->accountTo()->update([
+                'amount' => $operation->accountTo->amount + (($operation->sum) * $operation->price)
+            ]);
+
+            $operation->confirmed_at = new \DateTime();
+            DB::commit();
+            return [
+                'status' => 'confirmed',
+                'account_from' => $operation->accountFrom,
+                'account_to' => $operation->accountTo,
+            ];
+        } catch (\Exception $exception){
+            DB::rollBack();
+            throw $exception;
+        }
+    }
+
     /**
      * Проверка валидности курса
      *
@@ -113,5 +153,20 @@ class OperationService implements ICRUDService
         // TODO Взять с апишки данные о курсе и сравнить с пейлоадом
 
         return true;
+    }
+
+    /**
+     * Сгенерировать случайный код для подтверждения перевода
+     *
+     * @return string
+     */
+    private function genRandomCode(){
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < 10; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }

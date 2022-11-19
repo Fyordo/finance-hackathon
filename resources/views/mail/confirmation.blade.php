@@ -8,6 +8,7 @@
     <title>Mail</title>
 </head>
 <body>
-    <h1>Sign Up</h1>
+<h1>To confirm operation, use the code below:</h1><br>
+<h1><b>{{ $code }}</b></h1>
 </body>
 </html>

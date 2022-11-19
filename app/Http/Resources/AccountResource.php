@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Facades\CurrencyManager;
 use App\Facades\UserManager;
 use App\Models\Currency;
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AccountResource extends JsonResource
@@ -19,9 +20,9 @@ class AccountResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'currency' => $this->when($this->currency_id, new CurrencyResource(CurrencyManager::find(['id' => $this->currency_id])->first())),
+            'currency' => $this->when($this->currency_id, new CurrencyResource(Currency::find($this->currency_id))),
             'amount' => $this->amount,
-            'user' => $this->when($this->user_id, new UserResource(UserManager::find(['id' => $this->user_id])->first())),
+            'user' => $this->when($this->user_id, new UserResource(User::find($this->user_id))),
         ];
     }
 }
