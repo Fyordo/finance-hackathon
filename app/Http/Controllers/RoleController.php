@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Facades\RoleManager;
-use App\Http\Requests\Role\RoleFilterRequest;
 use App\Http\Requests\RoleRequest;
 use App\Http\Resources\RoleResource;
 use App\Models\Role;
@@ -24,7 +23,8 @@ class RoleController extends Controller
         }
         catch (\Exception $exception){
             return response()->json([
-                'error' => $exception->getMessage()
+                'error' => $exception->getMessage(),
+                'trace' => $exception->getTrace(),
             ], 400);
         }
     }
@@ -46,7 +46,8 @@ class RoleController extends Controller
         }
         catch (\Exception $exception){
             return response()->json([
-                'error' => $exception->getMessage()
+                'error' => $exception->getMessage(),
+                'trace' => $exception->getTrace(),
             ], 400);
         }
     }
@@ -65,7 +66,7 @@ class RoleController extends Controller
         catch (\Exception $exception){
             return response()->json([
                 'error' => $exception->getMessage(),
-                'type' => $exception::class
+                'trace' => $exception->getTrace(),
             ], 400);
         }
     }
@@ -89,7 +90,7 @@ class RoleController extends Controller
         catch (\Exception $exception){
             return response()->json([
                 'error' => $exception->getMessage(),
-                'type' => $exception::class
+                'trace' => $exception->getTrace(),
             ], 400);
         }
     }
@@ -110,7 +111,7 @@ class RoleController extends Controller
         catch (\Exception $exception){
             return response()->json([
                 'error' => $exception->getMessage(),
-                'type' => $exception::class
+                'trace' => $exception->getTrace(),
             ], 400);
         }
     }

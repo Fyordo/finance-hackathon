@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,6 +25,7 @@ class Role extends Model
     ];
 
     public const ADMIN_ROLE = 'ADMIN';
+    public const MODERATOR_ROLE = 'MODERATOR';
     public const CLIENT_ROLE = 'CLIENT';
 
     /**
