@@ -8,7 +8,9 @@
     <title>Mail</title>
 </head>
 <body>
-<h1>To confirm operation, use the code below:</h1><br>
-<h1><b>{{ $code }}</b></h1>
+<div align="center">
+    <h1>To confirm operation, use the code below:</h1><br>
+    <h1><b>{{ $code }}</b></h1>
+</div>
 </body>
 </html>
