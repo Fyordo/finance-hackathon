@@ -73,15 +73,7 @@ class RoleService implements ICRUDService
         if (!Auth::check() || !RoleRightManager::haveAccess(Auth::user()->role, Role::class, RoleRight::READ_RIGHT)){
             throw new RightException(RoleRight::READ_RIGHT);
         }
-        try {
-            return Role::where($filter)->get();
-        }
-        catch (QueryException $queryException){
-            throw new ModelFilterException();
-        }
-        catch (\Exception $exception){
-            throw new ModelReadException(Role::class);
-        }
+        return Role::filter($filter)->get();
     }
 
     /**

@@ -18,15 +18,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        try {
-            return RoleResource::collection(RoleManager::find(request()->all()));
-        }
-        catch (\Exception $exception){
-            return response()->json([
-                'error' => $exception->getMessage(),
-                'trace' => $exception->getTrace(),
-            ], 400);
-        }
+        return RoleResource::collection(RoleManager::find(request()->all()));
     }
 
     /**

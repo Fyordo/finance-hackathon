@@ -18,15 +18,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        try {
-            return UserResource::collection(UserManager::find(request()->all()));
-        }
-        catch (\Exception $exception){
-            return response()->json([
-                'error' => $exception->getMessage(),
-                'trace' => $exception->getTrace(),
-            ], 400);
-        }
+        return UserResource::collection(UserManager::find(request()->all()));
     }
 
     /**

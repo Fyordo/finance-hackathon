@@ -9,6 +9,7 @@ use App\Exceptions\ModelExceptions\ModelReadException;
 use App\Exceptions\ModelExceptions\ModelUpdateException;
 use App\Exceptions\RightException;
 use App\Facades\RoleRightManager;
+use App\Models\Searchable;
 use App\Models\User;
 use App\Models\RoleRight;
 use Illuminate\Database\Eloquent\Collection;
@@ -17,6 +18,8 @@ use Illuminate\Support\Facades\Auth;
 
 class UserService implements ICRUDService
 {
+    use Searchable;
+
     /**
      * @param User $model
      * @return User
@@ -65,22 +68,15 @@ class UserService implements ICRUDService
      * @param array $filter
      * @param ?User $user
      * @return Collection
-     * @throws \App\Exceptions\ModelExceptions\ModelReadException|\App\Exceptions\ModelExceptions\ModelFilterException
+     * @throws RightException
      */
     public function find($filter) : Collection
     {
         if (!Auth::check() || !RoleRightManager::haveAccess(Auth::user()->role, User::class, RoleRight::READ_RIGHT)){
             throw new RightException(RoleRight::READ_RIGHT);
         }
-        try {
-            return User::where($filter)->get();
-        }
-        catch (QueryException $queryException){
-            throw new ModelFilterException();
-        }
-        catch (\Exception $exception){
-            throw new ModelReadException(User::class);
-        }
+
+        return User::filter($filter)->get();
     }
 
     /**
