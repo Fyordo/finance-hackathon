@@ -6,6 +6,7 @@ use App\Exceptions\ModelExceptions\ModelCreateException;
 use App\Exceptions\ModelExceptions\ModelDeleteException;
 use App\Exceptions\ModelExceptions\ModelReadException;
 use App\Exceptions\ModelExceptions\ModelUpdateException;
+use App\Exceptions\OperationExceptions\InvalidPriceException;
 use App\Exceptions\OperationExceptions\InvalidSumException;
 use App\Exceptions\RightException;
 use App\Models\Operation;
@@ -25,8 +26,10 @@ class OperationService implements ICRUDService
             if ($model->sum && $model->sum < 0){
                 throw new InvalidSumException();
             }
-            // TODO InvalidPriceException
-            // TODO Mail Confirmation
+            if ($model->price && !$this->checkPrice($model->price)){
+                throw new InvalidPriceException();
+            }
+            // TODO Mail Send
             $model->save();
 
             return $model;
@@ -47,10 +50,13 @@ class OperationService implements ICRUDService
             throw new RightException('update');
         }
         if ($model) {
-            if ($attributes['sum'] && $attributes['sum'] < 0){
+            if (isset($attributes['sum']) && $attributes['sum'] < 0){
                 throw new InvalidSumException();
             }
-            // TODO InvalidPriceException
+            if (isset($attributes['price']) && !$this->checkPrice($attributes['price'])){
+                throw new InvalidPriceException();
+            }
+            // TODO Mail Confirmation
             try {
                 $model->update($attributes);
 
@@ -89,5 +95,23 @@ class OperationService implements ICRUDService
         } catch (\Exception $exception){
             throw new ModelDeleteException(Operation::class);
         }
+    }
+
+    /**
+     * Проверка валидности курса
+     *
+     * @param float $price
+     * @return bool
+     */
+    private function checkPrice(float $price) : bool{
+        $price = floatval($price);
+
+        if ($price <= 0){
+            return false;
+        }
+
+        // TODO Взять с апишки данные о курсе и сравнить с пейлоадом
+
+        return true;
     }
 }

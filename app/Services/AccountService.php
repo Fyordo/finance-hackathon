@@ -44,7 +44,7 @@ class AccountService implements ICRUDService
         }
         if ($model) {
             try {
-                if ($attributes['amount'] && $attributes['amount'] < 0){
+                if (isset($attributes['amount']) && $attributes['amount'] < 0){
                     $attributes['amount'] = 0;
                 }
                 $model->update($attributes);
