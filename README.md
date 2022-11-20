@@ -2,6 +2,7 @@
 
 ### _CI Status:_ ![Unit-testing](https://github.com/Fyordo/finance-hackathon/actions/workflows/laravel.yml/badge.svg)
 ### Хостинг: http://mobytescbteamchallenge.herokuapp.com/
+### Документация к АПИ: `config/Finance.postman_collection.json`
 
 ## Стек технологий
 
@@ -65,9 +66,6 @@ docker-compose down
 ## Дополнительные репозитории:
 ### [Сайт модератора (администратора)](https://github.com/akmalova/mobyte_scbteamchallenge_admin)
 ### [Основное мобильное приложение](https://github.com/MobyteDev/mobyte_scbteamchallenge)
-
-## Документация к АПИ:
-`config/Finance.postman_collection.json`
 
 ## Лицензия проекта
 
