@@ -2,7 +2,7 @@
 
 # Mobyte SCBChallenge backend
 
-![Unit-testing](https://github.com/Fyordo/finance-hackathon/actions/workflows/laravel/badge.svg)
+![Unit-testing](https://github.com/Fyordo/finance-hackathon/actions/workflows/laravel.yml/badge.svg)
 
 ## Лицензия проекта
 
