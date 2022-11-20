@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Facades\RoleRightManager;
 use App\Models\Traits\Searchable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -22,6 +23,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property bool dfa Включена ли двухфакторное подтверждение при переводе
  * @property bool is_male Пол
  * @property Role role Роль пользователя
+ * @property Collection accounts Счета пользователя
  * @property bool blocked Заблокирован ли пользователь
  *
  * @property int created_user_id Идентификатор создателя записи
@@ -90,6 +92,11 @@ class User extends Authenticatable implements JWTSubject
     public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function accounts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Account::class);
     }
 
     public function scopeFilter(Builder $query, array $filter){
