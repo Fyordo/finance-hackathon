@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\CurrencyManager;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Resources\UserResource;
+use App\Models\Currency;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -13,7 +15,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login','register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
     public function login(LoginRequest $request)
@@ -30,6 +32,13 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
+        if ($user->blocked) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Your account is blocked by administration!',
+            ], 401);
+        }
+
         return response()->json([
             'status' => 'success',
             'user' => new UserResource($user),
@@ -41,7 +50,8 @@ class AuthController extends Controller
 
     }
 
-    public function register(RegisterRequest $request){
+    public function register(RegisterRequest $request)
+    {
         $validated = $request->validated();
 
         $user = User::create([
@@ -52,6 +62,15 @@ class AuthController extends Controller
         ]);
 
         $token = Auth::login($user);
+
+        $rubCurrency = CurrencyManager::find(['const' => 'RUB'])->first();
+
+        if ($rubCurrency) {
+            $user->accounts()->create([
+                'currency_id' => $rubCurrency->id
+            ]);
+        }
+
         return response()->json([
             'status' => 'success',
             'message' => 'User created successfully',

@@ -1,66 +1,90 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Mobyte SCBChallenge API
 
+### _CI Status:_ ![Unit-testing](https://github.com/Fyordo/finance-hackathon/actions/workflows/laravel.yml/badge.svg)
+### Хостинг: http://mobytescbteamchallenge.herokuapp.com/
+### Документация к АПИ: `config/Finance.postman_collection.json`
+
+## Стек технологий
+
+<br>
+<br>
 <p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+    <a href="https://php.net" target="_blank">
+        <img src="https://www.php.net/images/logos/php-logo-white.svg" width="200" title="hover text" alt="">
+    </a>
+    <a href="https://laravel.com" target="_blank">
+        <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo">
+    </a>
+</p><br>
+<p align="center">
+    <a href="https://hub.docker.com/" target="_blank">
+        <img src="https://www.svgrepo.com/show/349342/docker.svg" width="200" title="hover text" alt="">
+    </a>
+</p><br>
+<p align="center">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/993px-Postgresql_elephant.svg.png" width="200" title="hover text" alt="">
+    <img src="https://cdn0.iconfinder.com/data/icons/ui-16px-perfect-megapack-line/16/82_Add-512.png" width="100" title="hover text" alt="">
+    <img src="https://cdn4.iconfinder.com/data/icons/redis-2/1451/Untitled-2-512.png" width="200" title="hover text" alt="">
+</p><br>
 
-## About Laravel
+## Развёртывание
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+#### _Не забудьте перед запуском заполнить .env файл (пример структуры указан в файле `.env.example`)_
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Сервисы приложения
+- **NGINX** (Работает на порту **8099**)
+- **PHP-FRM** (С установленным `composer` и нужными `extentions`)
+- **PostgreSQL DB** (Работает на порту, указанном в файле окружения `.env`)
+- **Redis**
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### **Через Makefile**
+```
+make up
+```
 
-## Learning Laravel
+### **Через Docker-Compose**
+```
+docker-compose up -d --build
+docker exec -it ${APP_NAME}-nginx bash
+chmod -R guo+w /var/www/storage
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+#### _При ошибке запуска контейнера NGINX повторить команду или запустить контейнер вручную_
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Свёртывание
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### **Через Makefile**
+```
+make down
+```
 
-## Laravel Sponsors
+### **Через Docker-Compose**
+```
+docker-compose down
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Дополнительные репозитории
+### [Сайт модератора (администратора)](https://github.com/akmalova/mobyte_scbteamchallenge_admin)
+### [Основное мобильное приложение](https://github.com/MobyteDev/mobyte_scbteamchallenge)
 
-### Premium Partners
+## Основной функционал
+- Ролевая модель (пользователь и администратор приложения, необходимы интерфейсы для каждой роли)
+- Функционал регистрации новых пользователей (в рамках процесса регистрации создается первый рублевый счет для торговли)
+- Функционал для блокировки/разблокировки пользователей
+- Функционал для пополнения и выведения средств с рублевого счета
+- Функционал открытия нового счета для проведения операций над выбранной пользователем валютой
+- Отображение сводной информации по имеющимся в портфеле пользователя активам. Состав представленной информации должен быть обоснован
+- Отображение исторической информации о движении валюты (отчет по сделанным операциям)
+- Отображение общей информации о пользователе приложения в удобном и понятном для пользователя виде (профиль текущего пользователя), в т.ч., и информация о реквизитах счетов, с которых совершаются операции над валютами
+- Функционал торговли, возможность покупать и продавать валюту по рыночному курсу (курс из внешнего источника)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## Дополнительный функционал
+- Команда `make console` для попадание в консоль сервиса php-fpm
+- Команда `make crud model=НазваниеМодели` для оперативного создания CRUD-структуры модели
+- Настроено CI\CD с автоматическим тестированием с помощью Heroku Buildpack и GitHub Actions
+- Реализована система персонального доступа к ресурсам базы данных
+- Добавлена документация к API с помощью Postman и Swagger OpenAPI
 
-## Contributing
+## Лицензия проекта
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Проект использует [MIT license](https://opensource.org/licenses/MIT).
