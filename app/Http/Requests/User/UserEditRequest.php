@@ -28,8 +28,8 @@ class UserEditRequest extends FormRequest
             'dfa' => ['required', 'boolean'],
             'is_male' => ['required', 'boolean'],
             'blocked' => ['boolean'],
-            'email' => ['required', 'string', 'max:255', 'email', 'unique:users'],
-            'phone' => ['required', 'string', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'max:255', 'email'],
+            'phone' => ['required', 'string', 'max:255'],
         ];
     }
 }

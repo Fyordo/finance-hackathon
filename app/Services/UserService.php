@@ -30,6 +30,9 @@ class UserService implements ICRUDService
         if (!Auth::check() || !RoleRightManager::haveAccess(Auth::user()->role, User::class, RoleRight::CREATE_RIGHT)){
             throw new RightException(RoleRight::CREATE_RIGHT);
         }
+        if ($this->find(['email' => $model->email])->exists() || $this->find(['phone' => $model->phone])->exists()){
+            throw new ModelCreateException(User::class);
+        }
         try {
             $model->save();
 
