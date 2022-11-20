@@ -25,7 +25,7 @@ class CurrencyController extends Controller
         $perPage = $validated['per_page'] ?? 12;
         $filter = $validated ?? [];
 
-        return CurrencyResource::collection(CurrencyManager::find($filter)->paginate($perPage));
+        return CurrencyResource::collection(CurrencyManager::find($filter)->get()/*->paginate($perPage)*/);
     }
 
     /**
