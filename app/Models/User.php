@@ -22,6 +22,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * @property bool dfa Включена ли двухфакторное подтверждение при переводе
  * @property bool is_male Пол
  * @property Role role Роль пользователя
+ * @property bool blocked Заблокирован ли пользователь
  *
  * @property int created_user_id Идентификатор создателя записи
  * @property int updated_user_id Идентификатор изменения записи
@@ -42,8 +43,9 @@ class User extends Authenticatable implements JWTSubject
         'phone',
         'password',
         'role_id',
-        '2fa',
+        'dfa',
         'is_male',
+        'blocked',
     ];
 
     /**

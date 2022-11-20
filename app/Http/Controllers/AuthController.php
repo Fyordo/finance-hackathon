@@ -30,6 +30,13 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
+        if ($user->blocked) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Your account is blocked by administration!',
+            ], 401);
+        }
+
         return response()->json([
             'status' => 'success',
             'user' => new UserResource($user),

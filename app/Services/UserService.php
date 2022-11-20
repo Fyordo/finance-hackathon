@@ -9,6 +9,7 @@ use App\Exceptions\ModelExceptions\ModelReadException;
 use App\Exceptions\ModelExceptions\ModelUpdateException;
 use App\Exceptions\RightException;
 use App\Facades\RoleRightManager;
+use App\Models\Role;
 use App\Models\Searchable;
 use App\Models\User;
 use App\Models\RoleRight;
@@ -50,6 +51,9 @@ class UserService implements ICRUDService
             throw new RightException(RoleRight::UPDATE_RIGHT);
         }
         if ($model) {
+            if (isset($attributes['blocked']) && !in_array(Auth::user()->role->const, [Role::ADMIN_ROLE, Role::MODERATOR_ROLE])){
+                throw new RightException(RoleRight::UPDATE_RIGHT);
+            }
             try {
                 $model->update($attributes);
 

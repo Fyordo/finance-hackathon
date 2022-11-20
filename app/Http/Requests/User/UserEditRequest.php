@@ -27,6 +27,7 @@ class UserEditRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'dfa' => ['required', 'boolean'],
             'is_male' => ['required', 'boolean'],
+            'blocked' => ['boolean'],
             'email' => ['required', 'string', 'max:255', 'email', 'unique:users'],
             'phone' => ['required', 'string', 'max:255', 'unique:users'],
         ];
