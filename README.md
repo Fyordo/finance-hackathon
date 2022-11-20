@@ -66,6 +66,9 @@ docker-compose down
 ### [Сайт модератора (администратора)](https://github.com/akmalova/mobyte_scbteamchallenge_admin)
 ### [Основное мобильное приложение](https://github.com/MobyteDev/mobyte_scbteamchallenge)
 
+## Документация к АПИ:
+`config/Finance.postman_collection.json`
+
 ## Лицензия проекта
 
 Проект использует [MIT license](https://opensource.org/licenses/MIT).
